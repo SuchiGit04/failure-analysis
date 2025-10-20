@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Failure Analysis</title>
+    <style>
+        body, h1, p, input, label, button {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;        
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #0056b3, #f0f8ff); /* Blue to light blue */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background-color: #ffffff; /* White background */
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            width: 400px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 15px;
+        }
+
+        .header {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #0056b3; /* Dark blue */
+            margin-bottom: 20px;
+        }
+
+        /* Form styling */
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #0056b3;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+        }
+
+        /* Options */
+        .form-options {
+            text-align: left;
+            margin: 10px 0;
+        }
+
+        .form-options label {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* Buttons */
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+            width: 48%;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .login-btn {
+            background-color: #0056b3; /* Dark blue */
+            color: white;
+        }
+
+        .login-btn:hover {
+            background-color: #003f7f; /* Darker blue */
+        }
+
+        .register-btn {
+            background-color: #f0f8ff; /* Light blue */
+            color: #0056b3; /* Dark blue */
+            border: 1px solid #0056b3;
+        }
+
+        .register-btn:hover {
+            background-color: #0056b3; /* Dark blue */
+            color: white;
+        }
+
+        /* Footer */
+        .login-footer {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .login-footer p {
+            margin-bottom: 5px;        
+        }
+
+        /* Secondary Buttons */
+        .secondary-buttons {
+            margin-top: 10px;
+        }
+
+        .secondary-buttons button {
+            background-color: #ffffff;
+            color: #0056b3;
+            border: 1px solid #0056b3;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .secondary-buttons button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <!-- Logo -->
+        <!-- <img src="static/images/such-logo.webp" alt="Logo" class="logo"> -->
+        
+        <!-- Header -->
+        <div class="header">Failure Analysis System</div>
+ 
+        <!-- Login Form -->
+<form method="POST" action="/login">
+    <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" placeholder="Enter your email" required autocomplete="off">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+    </div>
+    <div class="form-options">
+        <label>
+            <input type="checkbox" id="remember-me" name="remember-me">
+            Remember Me
+        </label>
+    </div>
+    <div class="form-buttons">
+        <button type="submit" class="btn login-btn">LOGIN</button>
+        <button type="button" id="register-btn" class="btn register-btn" onclick="window.location.href='/register'">Register</button>
+    </div>
+</form>
+        <!-- Footer -->
+        <div class="login-footer">
+            <p>Please provide your Username and password.</p>
+            <p>If you don't have one or have forgotten your password, you can reset it.</p>
+        </div>
+
+        <!-- Secondary Buttons -->
+        <div class="secondary-buttons">
+             <button type="button" class="link-btn" onclick="window.location.href='/forgot-password'">Forgot Password?</button>
+        </div>
+    </div>
+</body>
+</html>
+
+
+

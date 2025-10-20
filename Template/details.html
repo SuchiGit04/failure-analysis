@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Failure Analysis Report</title>
+    
+    <style>
+        body {
+            background-color: #f7f9fc;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1100px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+        }
+        h2 {
+            color: #003366;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        h4 {
+            color: #0056b3;
+            font-size: 18px;
+            margin: 20px 0 10px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .table th {
+            background-color: #cce5ff;
+            color: #003366;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f8ff;
+        }
+        .card {
+            background: #f9fbfd;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            font-size: 14px;
+            padding: 8px 12px;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background-color: #1e7e34;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: #fff;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .file-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Bottom Button Row */
+        .bottom-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .logout-btn {
+            background: linear-gradient(45deg, #dc3545, #b02a37);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .logout-btn:hover {
+            background: linear-gradient(45deg, #b02a37, #7a1f28);
+        }
+
+        .back-btn {
+            background: linear-gradient(45deg, #6c757d, #495057);
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .back-btn:hover {
+            background: linear-gradient(45deg, #5a6268, #343a40);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Failure Analysis Report</h2>
+
+        <!-- Customer Information Table -->
+        <h4>Customer Information</h4>
+        <table class="table table-bordered">
+            <tbody>
+                <tr><th>ID</th><td>{{ record[0] }}</td></tr>
+                <tr><th>Customer</th><td>{{ record[1] }}</td></tr>
+                <tr><th>Contact Person</th><td>{{ record[2] }}</td></tr>
+                <tr><th>Tel</th><td>{{ record[3] }}</td></tr>
+                <tr><th>Email</th><td>{{ record[4] }}</td></tr>
+                <tr><th>Customer Ref</th><td>{{ record[5] }}</td></tr>
+                <tr><th>Location</th><td>{{ record[6] }}</td></tr>
+                <tr><th>Originator</th><td>{{ record[7] }}</td></tr>
+                <tr><th>Date Received</th><td>{{ record[8] }}</td></tr>
+                <tr><th>Sent To</th><td>{{ record[9] }}</td></tr>
+            </tbody>
+        </table>
+
+        <!-- Device Information Table -->
+        <h4>Device Information</h4>
+        <table class="table table-bordered">
+            <tbody>
+                <tr><th style="width: 500px;">Suchi PN</th><td>{{ record[10] }}</td></tr>
+                <tr><th>Datecode</th><td>{{ record[11] }}</td></tr>
+                <tr><th>Customer PN</th><td>{{ record[12] }}</td></tr>
+                <tr><th>Serial</th><td>{{ record[13] }}</td></tr>
+                <tr><th>Quantity</th><td>{{ record[14] }}</td></tr>
+                <tr><th>Invoice</th><td>{{ record[15] }}</td></tr>
+            </tbody>
+        </table>
+
+        <!-- Defect Information Table -->
+        <h4>Defect Information</h4>
+        <table class="table table-bordered">
+            <tbody>
+                <tr><th>Complaint</th><td>{{ record[16] }}</td></tr>
+                <tr><th>Defect Comments</th><td>{{ record[17] }}</td></tr>
+                <tr><th>Point of Defect</th><td>{{ record[18] }}</td></tr>
+                <tr><th>Defect Point Comments</th><td>{{ record[19] }}</td></tr>
+                <tr><th>Defect Rate</th><td>{{ record[20] }}</td></tr>
+                <tr><th>Application</th><td>{{ record[21] }}</td></tr>
+                <tr><th>Remarks</th><td>{{ record[22] }}</td></tr>
+                <tr><th>Submitted At</th><td>{{ record[23] }}</td></tr>
+            </tbody>
+        </table>
+    
+        <div class="card">
+            <h4>Upload a File</h4>
+            <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="request_id" value="{{ record[0] }}">
+                <input type="file" name="uploaded_file" required>
+                <button type="submit" class="btn btn-primary mt-2">Upload</button>
+            </form>
+            <br>
+            
+            <button onclick="window.location.href='/view-file/{{ record[0] }}'" class="btn btn-success">View Files</button>
+            <button onclick="window.location.href='/download/1'" class="btn btn-primary">Download File</button>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="text-center">
+            <!-- <a href="/masterlist" class="btn btn-secondary">Back to Masterlist</a> -->
+            <a href="/edit/{{ record[0] }}" class="btn btn-warning">Edit</a>
+            <button type="button" id="statusButton" class="btn btn-danger mt-2" onclick="changeStatus('{{ record[0] }}')">
+                Click here to close this file
+            </button>
+        </div>
+
+        <!-- Bottom Navigation (Back + Logout) -->
+        <div class="bottom-buttons">
+            <button class="back-btn" onclick="window.location.href='/masterlist'">← Back</button>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+<script>
+function changeStatus(requestId) {
+    fetch('/update-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: requestId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            Swal.fire({
+                title: "✅ Success!",
+                text: data.message,
+                icon: "success",
+                confirmButtonText: "OK"
+            });
+
+            const button = document.getElementById("statusButton");
+            button.innerText = "Closed";
+            button.disabled = true;
+            button.classList.remove("btn-danger");
+            button.classList.add("btn-secondary");
+        } else {
+            Swal.fire({
+                title: "❌ Error!",
+                text: data.error || "Something went wrong.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            title: "❌ Error!",
+            text: "Network or server error.",
+            icon: "error",
+            confirmButtonText: "OK"
+        });
+    });
+}
+
+function logout() {
+    sessionStorage.clear();
+    window.location.href = "/login";
+}
+
+document.getElementById('uploadForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+    fetch('/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message);
+        } else if (data.error) {
+            alert("❌ Error: " + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("❌ Upload failed!");
+    });
+});
+</script>
+
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+</html>

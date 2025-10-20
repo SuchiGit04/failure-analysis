@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Failure Analysis Request</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 900px;
+            background: #fff;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #0056b3;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        textarea {
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Failure Analysis Request</h2>
+    <form method="POST" action="/submit">
+        <h4>Failure Information</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Customer</label>
+                    <input type="text" class="form-control" name="customer" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact Person</label>
+                    <input type="text" class="form-control" name="contact_person" required>
+                </div>
+                <div class="form-group">
+                    <label>Tel No.</label>
+                    <input type="text" class="form-control" name="tel">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Cust Ref. No.</label>
+                    <input type="text" class="form-control" name="cust_ref">
+                </div>
+                <div class="form-group">
+                    <label>Customer Location</label>
+                    <input type="text" class="form-control" name="cust_location">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Suchi Originator</label>
+                    <input type="text" class="form-control" name="suchi_originator">
+                </div>
+                <div class="form-group">
+                    <label>Date suchi 1st Rec'd</label>
+                    <input type="date" class="form-control" name="date_received">
+                </div>
+                <div class="form-group">
+                    <label>Sent to</label>
+                    <input type="text" class="form-control" name="sent_to">
+                </div>
+            </div>
+        </div>
+        <hr>
+        <h4>Device Information</h4>
+        <div class="form-group">
+            <label>Suchi PN</label>
+            <input type="text" class="form-control" name="suchi_pn">
+        </div>
+        <div class="form-group">
+            <label>Datecode</label>
+            <input type="text" class="form-control" name="datecode">
+        </div>
+        <div class="form-group">
+            <label>Customer PN</label>
+            <input type="text" class="form-control" name="customer_pn">
+        </div>
+        <div class="form-group">
+            <label>Lot/Serial#</label>
+            <input type="text" class="form-control" name="serial">
+        </div>
+        <div class="form-group">
+            <label>Quantity</label>
+            <input type="number" class="form-control" name="quantity">
+        </div>
+        <div class="form-group">
+            <label>DN/Invoice#</label>
+            <input type="text" class="form-control" name="invoice">
+        </div>
+        <hr>
+        <h4>Defect Information</h4>
+        <div class="form-group">
+            <label>Type of Failure</label><br>
+            <input type="checkbox" name="complaint" value="Electrical"> Electrical
+            <input type="checkbox" name="complaint" value="Mechanical"> Mechanical
+            <input type="checkbox" name="complaint" value="Visual"> Visual
+            <input type="checkbox" name="complaint" value="Packing"> Packing
+            <input type="checkbox" name="complaint" value="Label"> Label
+            <input type="checkbox" name="complaint" value="Mixed Part"> Mixed Part
+           
+
+            <input type="checkbox" name="complaint" value="Other"> Other
+        </div>
+
+
+        <div class="form-group">
+            <label>Comments</label>
+            <textarea class="form-control" rows="3" name="defect_comments"></textarea>
+        </div>
+
+        
+        <div class="form-group">
+            <label>Points of Defect</label><br>
+            <input type="checkbox" name="point_of_defect" value="Qualification"> Qualification
+            <input type="checkbox" name="point_of_defect" value="Field/Warranty Defect"> Field/Warranty Defect
+            <input type="checkbox" name="point_of_defect" value="Incoming"> Incoming
+            <input type="checkbox" name="point_of_defect" value="Line/0km"> Line/0km (for automotive)
+            <input type="checkbox" name="point_of_defect" value="Assembly"> Assembly
+            <input type="checkbox" name="point_of_defect" value="Suchi Production Defect"> Suchi Production Defect
+        </div>
+        <div class="form-group">
+            <label>Comments</label>
+            <textarea class="form-control" rows="3" name="defect_point_comments"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Defect Rate</label>
+            <input type="text" class="form-control" name="defect_rate">
+        </div>
+        <div class="form-group">
+            <label>Application</label>
+            <input type="text" class="form-control" name="application">
+        </div>
+        <div class="form-group">
+            <label>Remarks/Other Data</label>
+            <textarea class="form-control" rows="3" name="remarks"></textarea>
+        </div>
+        <div class="form-group text-center mt-4">
+            <button type="submit" class="btn btn-primary">Submit Request</button>
+        </div>
+    </form>
+
+
+    
+        <!-- Back Button -->
+<button type="button" onclick="window.history.back()" style="
+    margin-top: 15px;
+    background: linear-gradient(45deg, #6c757d, #495057);
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+">Back</button>
+</div>
+</body>
+</html>
