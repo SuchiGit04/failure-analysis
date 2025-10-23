@@ -1,0 +1,29 @@
+name: Deploy Failure Analysis App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to Windows Server via SSH
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: 192.168.1.21
+        username: Administrator
+        password: ${{ secrets.SERVER_PASSWORD }}
+        script: |
+          cd "C:\Users\Administrator\Documents\Failure Analysis"
+          git pull origin main
+          python -m venv venv
+          .\venv\Scripts\activate
+          pip install -r requirements.txt
+          taskkill /F /IM python.exe
+          Start-Process python -ArgumentList "app.py"
