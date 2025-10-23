@@ -18,12 +18,28 @@ jobs:
       with:
         host: 192.168.1.21
         username: Administrator
-        password: ${{ secrets.SERVER_PASSWORD }}
+        password: ${{myNewPassword123}}
         script: |
-          cd "C:\Users\Administrator\Documents\Failure Analysis"
+          # Navigate to project folder
+          Set-Location "C:\Users\Administrator\Documents\Failure Analysis"
+
+          # Pull latest changes
           git pull origin main
-          python -m venv venv
-          .\venv\Scripts\activate
+
+          # Create virtual environment if it doesn't exist
+          if (-not (Test-Path "venv")) {
+              python -m venv venv
+          }
+
+          # Activate virtual environment
+          .\venv\Scripts\Activate.ps1
+
+          # Install/update dependencies
+          pip install --upgrade pip
           pip install -r requirements.txt
-          taskkill /F /IM python.exe
-          Start-Process python -ArgumentList "app.py"
+
+          # Kill any running Python processes for the app
+          Get-Process python -ErrorAction SilentlyContinue | Stop-Process -Force
+
+          # Start the app in a new PowerShell process
+          Start-Process powershell -ArgumentList '-NoProfile -WindowStyle Hidden -Command "cd \"C:\Users\Administrator\Documents\Failure Analysis\"; .\venv\Scripts\python.exe app.py"'
