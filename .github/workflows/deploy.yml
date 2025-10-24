@@ -15,7 +15,7 @@ jobs:
 
     - name: Deploy on Windows server
       run: |
-        cd C:\Users\Administrator\Documents\Failure Analysis
+        cd C:\Users\Administrator\Documents\FailureAnalysis
         git pull origin main
         if (-not (Test-Path "venv")) {
             python -m venv venv
@@ -24,4 +24,4 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
         Get-Process python -ErrorAction SilentlyContinue | Stop-Process -Force
-        Start-Process powershell -ArgumentList '-NoProfile -WindowStyle Hidden -Command "cd \"C:\Users\Administrator\Documents\Failure Analysis\"; .\venv\Scripts\python.exe app.py"'
+        Start-Process powershell -ArgumentList '-NoProfile -WindowStyle Hidden -Command "cd \"C:\Users\Administrator\Documents\FailureAnalysis\"; .\venv\Scripts\python.exe app.py"'
