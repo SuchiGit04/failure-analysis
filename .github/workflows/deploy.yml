@@ -15,7 +15,7 @@ jobs:
 
     - name: Deploy on Windows server
       run: |
-        cd C:\Users\Administrator\Documents\FailureAnalysis
+        cd C:\Users\Administrator\Documents\Failure Analysis
         git pull origin main
         if (-not (Test-Path "venv")) {
             python -m venv venv
