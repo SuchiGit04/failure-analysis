@@ -1,30 +1,47 @@
-Write-Host "Starting deployment for Failure Analysis..."
+# =========================================================
+# PowerShell Deployment Script (Safe for Multiple Projects)
+# =========================================================
 
-# Go to project folder
-Set-Location "C:\Users\Administrator\Documents\Failure Analysis"
+# ----------- Configuration -----------
+$projectName = "FailureAnalysis"
+$projectPath = "C:\Users\Administrator\Documents\Failure Analysis"
+$pythonExe = "$projectPath\venv\Scripts\python.exe"
+$appFile = "app.py"
+# (Optional) assign a port number for reference
+$port = 5006
 
-# Discard any local changes and pull latest code
+# -------------------------------------
+
+Write-Host "🚀 Starting deployment for $projectName..."
+
+# Go to project directory
+Set-Location $projectPath
+
+# Pull latest code
+Write-Host "📥 Pulling latest code..."
 git reset --hard
+git clean -fd
 git pull origin main
 
-# Activate virtual environment and install dependencies
-Write-Host "Installing dependencies..."
-& "C:\Users\Administrator\Documents\Failure Analysis\venv\Scripts\activate.ps1"
-pip install -r requirements.txt
-
-# Stop only the app running on port 5006
-Write-Host "Stopping existing Flask app on port 5006..."
-$port = 5006
-$pid = (Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue).OwningProcess
-if ($pid) {
-    Stop-Process -Id $pid -Force
-    Write-Host "Stopped process using port $port (PID: $pid)"
-} else {
-    Write-Host "No process found on port $port."
+# Ensure virtual environment
+if (-not (Test-Path "$projectPath\venv")) {
+    Write-Host "🧱 Creating virtual environment..."
+    python -m venv venv
 }
 
-# Restart Flask app in background
-Write-Host "Starting Flask app..."
-Start-Process "cmd.exe" "/c start /min python app.py" -WorkingDirectory "C:\Users\Administrator\Documents\Failure Analysis"
+# Install dependencies
+Write-Host "📦 Installing dependencies..."
+& "$projectPath\venv\Scripts\python.exe" -m pip install --upgrade pip
+& "$projectPath\venv\Scripts\python.exe" -m pip install -r requirements.txt
 
-Write-Host "Deployment completed successfully."
+# Stop only this project's Flask process (by app path)
+Write-Host "🛑 Stopping existing Flask instance (if any)..."
+Get-WmiObject Win32_Process | Where-Object { $_.CommandLine -match "$projectPath\\$appFile" } | ForEach-Object {
+    Stop-Process -Id $_.ProcessId -Force
+}
+
+# Start new Flask app in fully detached CMD window
+Write-Host "🚀 Starting new Flask app for $projectName..."
+Start-Process -FilePath "cmd.exe" -ArgumentList "/c start python `"$projectPath\$appFile`"" -WorkingDirectory $projectPath -WindowStyle Minimized
+
+Write-Host "✅ Deployment complete! $projectName is running on port $port."
