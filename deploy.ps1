@@ -25,6 +25,6 @@ if ($pid) {
 
 # Restart Flask app in background
 Write-Host "Starting Flask app..."
-Start-Process python "app.py"
+Start-Process "cmd.exe" "/c start /min python app.py" -WorkingDirectory "C:\Users\Administrator\Documents\Failure Analysis"
 
 Write-Host "Deployment completed successfully."
