@@ -14,28 +14,29 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Deploy on Windows server
+      shell: pwsh
       run: |
-        $projectPath = 'C:\Users\Administrator\Documents\Failure Analysis'
+        $projectPath = "C:\Users\Administrator\Documents\Failure Analysis"
 
-        # Navigate to project folder
+        # Verify path exists
+        if (-not (Test-Path $projectPath)) {
+            Write-Host "❌ ERROR: Project path not found: $projectPath"
+            exit 1
+        }
+
+        Write-Host "✅ Found project path: $projectPath"
         Set-Location $projectPath
 
-        # Reset any local changes and pull latest code
+        # Reset local changes and pull latest from main
         git reset --hard
         git clean -fd
         git pull origin main
 
-        # Create virtual environment if it doesn't exist
+        # Create virtual environment if missing
         if (-not (Test-Path "$projectPath\venv")) {
             python -m venv venv
         }
 
         # Install/update dependencies
-        .\venv\Scripts\python.exe -m pip install --upgrade pip
-        .\venv\Scripts\python.exe -m pip install -r requirements.txt
-
-        # Stop any running Python app
-        Get-Process python -ErrorAction SilentlyContinue | Stop-Process -Force
-
-        # Start the app in background
-        Start-Process -FilePath .\venv\Scripts\python.exe -ArgumentList "$projectPath\app.py" -WorkingDirectory $projectPath
+        & "$projectPath\venv\Scripts\python.exe" -m pip install --upgrade pip
+        & "$projectPath\venv\Scripts
