@@ -7,26 +7,21 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: [self-hosted, Windows, X64]
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Deploy to Windows Server via SSH
-      uses: appleboy/ssh-action@v0.1.10
-      with:
-        host: 192.168.1.21
-        username: Administrator
-        password: ${{ secrets.SERVER_PASSWORD }}
-        script: |
-          Set-Location "C:\Users\Administrator\Documents\Failure Analysis"
-          git pull origin main
-          if (-not (Test-Path "venv")) {
-              python -m venv venv
-          }
-          .\venv\Scripts\Activate.ps1
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          Get-Process python -ErrorAction SilentlyContinue | Stop-Process -Force
-          Start-Process powershell -ArgumentList '-NoProfile -WindowStyle Hidden -Command "cd \"C:\Users\Administrator\Documents\Failure Analysis\"; .\venv\Scripts\python.exe app.py"'
+    - name: Deploy on Windows server
+      run: |
+        cd "C:\Users\Administrator\Documents\Failure Analysis"
+        git pull origin main
+        if (-not (Test-Path "venv")) {
+            python -m venv venv
+        }
+        .\venv\Scripts\Activate.ps1
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        Get-Process python -ErrorAction SilentlyContinue | Stop-Process -Force
+        Start-Process powershell -ArgumentList '-NoProfile -WindowStyle Hidden -Command "cd \"C:\Users\Administrator\Documents\Failure Analysis\"; .\venv\Scripts\python.exe app.py"'
