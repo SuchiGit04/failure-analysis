@@ -15,13 +15,27 @@ jobs:
 
     - name: Deploy on Windows server
       run: |
-        cd C:\Users\Administrator\Documents\Failure Analysis
+        $projectPath = 'C:\Users\Administrator\Documents\Failure Analysis'
+
+        # Go to project folder
+        Set-Location $projectPath
+
+        # Pull latest changes
+        git reset --hard
+        git clean -fd
         git pull origin main
-        if (-not (Test-Path "venv")) {
+
+        # Create virtual environment if missing
+        if (-not (Test-Path "$projectPath\venv")) {
             python -m venv venv
         }
-        .\venv\Scripts\Activate.ps1
-        pip install --upgrade pip
-        pip install -r requirements.txt
+
+        # Install/update dependencies directly using venv python
+        .\venv\Scripts\python.exe -m pip install --upgrade pip
+        .\venv\Scripts\python.exe -m pip install -r requirements.txt
+
+        # Kill any running app
         Get-Process python -ErrorAction SilentlyContinue | Stop-Process -Force
-        Start-Process powershell -ArgumentList '-NoProfile -WindowStyle Hidden -Command "cd \"C:\Users\Administrator\Documents\FailureAnalysis\"; .\venv\Scripts\python.exe app.py"'
+
+        # Start the app in background
+        Start-Process -FilePath .\venv\Scripts\python.exe -ArgumentList "$projectPath\app.py" -WorkingDirectory $projectPath
