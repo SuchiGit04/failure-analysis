@@ -17,24 +17,24 @@ jobs:
       run: |
         $projectPath = 'C:\Users\Administrator\Documents\Failure Analysis'
 
-        # Go to project folder
+        # Navigate to project folder
         Set-Location $projectPath
 
-        # Pull latest changes
+        # Reset any local changes and pull latest code
         git reset --hard
         git clean -fd
         git pull origin main
 
-        # Create virtual environment if missing
+        # Create virtual environment if it doesn't exist
         if (-not (Test-Path "$projectPath\venv")) {
             python -m venv venv
         }
 
-        # Install/update dependencies directly using venv python
+        # Install/update dependencies
         .\venv\Scripts\python.exe -m pip install --upgrade pip
         .\venv\Scripts\python.exe -m pip install -r requirements.txt
 
-        # Kill any running app
+        # Stop any running Python app
         Get-Process python -ErrorAction SilentlyContinue | Stop-Process -Force
 
         # Start the app in background
