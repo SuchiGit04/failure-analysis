@@ -10,18 +10,18 @@ jobs:
     runs-on: [self-hosted, Windows, X64]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Deploy on Windows server
-      run: |
-        cd "C:\Users\HP\Documents\Failure Analysis"
-        git pull origin main
-        if (-not (Test-Path "venv")) {
-            python -m venv venv
-        }
-        .\venv\Scripts\Activate.ps1
-        pip install --upgrade pip
-        pip install -r requirements.txt
-        Get-Process python -ErrorAction SilentlyContinue | Stop-Process -Force
-        Start-Process powershell -ArgumentList '-NoProfile -WindowStyle Hidden -Command "cd \"C:\Users\HP\Documents\Failure Analysis\"; .\venv\Scripts\python.exe app.py"'
+      - name: Deploy on Windows server
+        run: |
+          cd "C:\Users\Administrator\Documents\Failure Analysis"
+          git reset --hard origin/main
+          if (-not (Test-Path "venv")) {
+              python -m venv venv
+          }
+          .\venv\Scripts\Activate.ps1
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          Get-Process python -ErrorAction SilentlyContinue | Stop-Process -Force
+          Start-Process powershell -ArgumentList '-NoProfile -WindowStyle Hidden -Command "cd \"C:\Users\Administrator\Documents\Failure Analysis\"; .\venv\Scripts\python.exe app.py"'
