@@ -10,33 +10,46 @@ jobs:
     runs-on: [self-hosted, Windows, X64]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Deploy on Windows server
-      shell: pwsh
-      run: |
-        $projectPath = "C:\Users\Administrator\Documents\Failure Analysis"
+      - name: Deploy on Windows server
+        shell: pwsh
+        run: |
+          $projectPath = "C:\Users\Administrator\Documents\Failure Analysis"
 
-        # Verify path exists
-        if (-not (Test-Path $projectPath)) {
-            Write-Host "❌ ERROR: Project path not found: $projectPath"
-            exit 1
-        }
+          # Verify path exists
+          if (-not (Test-Path $projectPath)) {
+              Write-Host "❌ ERROR: Project path not found: $projectPath"
+              exit 1
+          }
 
-        Write-Host "✅ Found project path: $projectPath"
-        Set-Location $projectPath
+          Write-Host "✅ Found project path: $projectPath"
+          Set-Location $projectPath
 
-        # Reset local changes and pull latest from main
-        git reset --hard
-        git clean -fd
-        git pull origin main
+          # Reset local changes and pull latest code
+          git reset --hard
+          git clean -fd
+          git pull origin main
 
-        # Create virtual environment if missing
-        if (-not (Test-Path "$projectPath\venv")) {
-            python -m venv venv
-        }
+          # Create virtual environment if missing
+          if (-not (Test-Path "$projectPath\venv")) {
+              python -m venv venv
+          }
 
-        # Install/update dependencies
-        & "$projectPath\venv\Scripts\python.exe" -m pip install --upgrade pip
-        & "$projectPath\venv\Scripts
+          # Install/update dependencies using venv python
+          & "$projectPath\venv\Scripts\python.exe" -m pip install --upgrade pip
+          & "$projectPath\venv\Scripts\python.exe" -m pip install -r requirements.txt
+
+          # Stop only the previous instance of this project (by looking at the command)
+          $flaskProcess = Get-Process python -ErrorAction SilentlyContinue | Where-Object {
+              $_.Path -eq "$projectPath\venv\Scripts\python.exe"
+          }
+          if ($flaskProcess) {
+              Write-Host "Stopping previous instance of Failure Analysis..."
+              $flaskProcess | Stop-Process -Force
+          }
+
+          # Start the app in background
+          Write-Host "Starting Failure Analysis..."
+          Start-Process -FilePath "$projectPath\venv\Scripts\python.exe" -ArgumentList "$projectPath\app.py" -WorkingDirectory $projectPath
