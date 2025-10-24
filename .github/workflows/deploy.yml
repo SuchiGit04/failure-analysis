@@ -14,9 +14,8 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Deploy on Windows server
-      shell: pwsh
       run: |
-        $projectPath = "C:\Users\Administrator\Documents\Failure Analysis"
+        $projectPath = 'C:\Users\Administrator\Documents\Failure Analysis'
 
         # Verify project path exists
         if (-not (Test-Path $projectPath)) {
@@ -27,7 +26,7 @@ jobs:
         Write-Host "✅ Found project path: $projectPath"
         Set-Location $projectPath
 
-        # Discard local changes and pull latest code
+        # Reset local changes and pull latest code
         git reset --hard
         git clean -fd
         git pull origin main
@@ -37,11 +36,11 @@ jobs:
             python -m venv venv
         }
 
-        # Upgrade pip and install dependencies
+        # Install/update dependencies using venv python
         & "$projectPath\venv\Scripts\python.exe" -m pip install --upgrade pip
         & "$projectPath\venv\Scripts\python.exe" -m pip install -r requirements.txt
 
-        # Stop previous instance of this project only
+        # Stop only the previous instance of Failure Analysis (by checking venv path)
         $flaskProcess = Get-Process python -ErrorAction SilentlyContinue | Where-Object {
             $_.Path -eq "$projectPath\venv\Scripts\python.exe"
         }
@@ -50,8 +49,6 @@ jobs:
             $flaskProcess | Stop-Process -Force
         }
 
-        # Start the app in background
+        # Start the Flask app in background
         Write-Host "Starting Failure Analysis..."
         Start-Process -FilePath "$projectPath\venv\Scripts\python.exe" -ArgumentList "$projectPath\app.py" -WorkingDirectory $projectPath
-
-        Write-Host "✅ Deployment completed successfully!"
